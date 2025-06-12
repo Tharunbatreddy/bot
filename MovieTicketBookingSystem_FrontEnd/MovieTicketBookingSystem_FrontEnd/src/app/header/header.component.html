@@ -1,0 +1,24 @@
+<header class="headerSticky" style="background: var(--primary); color: var(--white); padding: 1rem 0;">
+  <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+    <a routerLink="/" style="color: var(--white); text-decoration: none;">
+      <h1 style="margin: 0;">Film Finder</h1>
+    </a>
+    <nav>
+      <a routerLink="/" style="color: var(--white); text-decoration: none; margin-left: 1rem;">Home</a>
+      <a routerLink="/bookings" style="color: var(--white); text-decoration: none; margin-left: 1rem;"
+        *ngIf="currentUser && currentUser?.email!='shanzahid06@gmail.com'">Bookings</a>
+      <a routerLink="/admin" style="color: var(--white); text-decoration: none; margin-left: 1rem;"
+        *ngIf="currentUser?.email=='shanzahid06@gmail.com'">Admin</a>
+
+      @if (!currentUser?.id) {
+      <a routerLink="/login" style="color: var(--white); text-decoration: none; margin-left: 1rem;">Login</a>
+      <a routerLink="/signup" style="color: var(--white); text-decoration: none; margin-left: 1rem;">Sign Up</a>
+      } @else {
+      <button (click)="logout()"
+        style="color: var(--white); background: none; border: none; cursor: pointer; margin-left: 1rem;">
+        Logout
+      </button>
+      }
+    </nav>
+  </div>
+</header>

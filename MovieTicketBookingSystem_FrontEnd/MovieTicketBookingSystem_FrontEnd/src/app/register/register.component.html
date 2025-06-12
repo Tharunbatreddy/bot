@@ -1,0 +1,79 @@
+<div class="container" style="max-width: 400px; margin: 2rem auto;">
+  <div class="card" style="padding: 2rem;">
+    <h2 style="margin: 0 0 1.5rem;">Sign Up</h2>
+    <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+      <div style="margin-bottom: 1rem;">
+        <label for="name" style="display: block; margin-bottom: 0.5rem;">Name</label>
+        <input type="text" id="name" name="name" [(ngModel)]="name" required minlength="2" #nameInput="ngModel"
+          style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid"
+          [style.borderColor]="nameInput.invalid && nameInput.touched ? 'red' : '#ddd'">
+        @if (nameInput.invalid && nameInput.touched) {
+        <small style="color: red;">Name must be at least 2 characters long</small>
+        }
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label for="email" style="display: block; margin-bottom: 0.5rem;">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="email" required email #emailInput="ngModel"
+          style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid"
+          [style.borderColor]="emailInput.invalid && emailInput.touched ? 'red' : '#ddd'">
+        @if (emailInput.invalid && emailInput.touched) {
+        <small style="color: red;">Please enter a valid email address</small>
+        }
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label for="password" style="display: block; margin-bottom: 0.5rem;">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" #passwordInput="ngModel"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$" required
+          style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid"
+          [style.borderColor]="passwordInput.invalid && passwordInput.touched ? 'red' : '#ddd'">
+        @if (passwordInput.invalid && passwordInput.touched) {
+
+        <small style="color: red;" *ngIf="passwordInput.errors?.['required']">Password required</small>
+        <small style="color: red;" *ngIf="passwordInput.errors?.['pattern']">
+          Password must be at least 8 characters long and contain:
+          <ul style="margin: 0.5rem 0 0 1.5rem;">
+            <li>One uppercase letter</li>
+            <li>One lowercase letter</li>
+            <li>One number</li>
+            <li>One special character</li>
+          </ul>
+        </small>
+
+        }
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label for="name" style="display: block; margin-bottom: 0.5rem;">Age</label>
+        <input type="text" id="age" name="age" [(ngModel)]="age" required #ageInput="ngModel"
+          style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid"
+          [style.borderColor]="ageInput.invalid && ageInput.touched ? 'red' : '#ddd'">
+        @if (ageInput.invalid && ageInput.touched && age < 18) { <small style="color: red;">Age must be greater than
+          18</small>
+          }
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label for="name" style="display: block; margin-bottom: 0.5rem;">Mobile Number</label>
+        <input type="text" id="mobileNo" name="mobileNo" [(ngModel)]="mobileNo" required maxlength="10" minlength="10"
+          #mobileNoInput="ngModel" style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid"
+          [style.borderColor]="mobileNoInput.invalid && mobileNoInput.touched ? 'red' : '#ddd'">
+        @if (mobileNoInput.invalid && mobileNoInput.touched && mobileNoInput?.errors?.['minlength'] ) {
+        <small style="color: red;">Mobile number must be 10 digits</small>
+        }
+      </div>
+
+      @if (error) {
+      <div style="color: red; margin-bottom: 1rem;">{{ error }}</div>
+      }
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;" [disabled]="signupForm.invalid">
+        Sign Up
+      </button>
+
+      <p style="text-align: center; margin-top: 1rem;">
+        Already have an account?
+        <a routerLink="/login" style="color: var(--primary);">Login</a>
+      </p>
+    </form>
+  </div>
+</div>

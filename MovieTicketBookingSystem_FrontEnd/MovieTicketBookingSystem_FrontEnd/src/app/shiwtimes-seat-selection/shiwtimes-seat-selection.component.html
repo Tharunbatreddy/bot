@@ -1,0 +1,85 @@
+<div class="container" style="padding: 2rem 0;">
+    @if (movie) {
+    <h2>Book Tickets - {{ movie.movieName }}</h2>
+
+    <!-- Showtime Selection -->
+    <div style="margin: 2rem 0;">
+        <h3>Select Showtime</h3>
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            @for (time of showTimes; track time.id) {
+            <button class="btn" [class.btn-primary]="selectedShowTime?.id === time.id" (click)="selectShowTime(time)">
+                <strong> {{ time.showDate | date:'MMM dd YYYY' }} - {{ time.showTime }} </strong>
+            </button>
+            }
+        </div>
+        <div *ngIf="!showTimes.length" style="text-align: center;">
+            <strong style="font-size: 18px;color:#1a237e;"> Oops!!!! No Shows
+                found</strong>
+        </div>
+    </div>
+
+    <!-- Seat Selection -->
+    @if (selectedShowTime) {
+    <div style="margin: 2rem 0;">
+        <h3>Select Seats</h3>
+        <div style="margin: 2rem 0;">
+            <div style="background: #ddd; padding: 1rem; text-align: center; margin-bottom: 2rem;">
+                SCREEN
+            </div>
+
+            <div style="display: grid; gap: 0.5rem; justify-content: center;">
+                @for (row of getRows(); track row) {
+                <div style="display: flex; gap: 0.5rem;">
+                    <span style="width: 30px; text-align: center; line-height: 35px;">
+                        {{ row }}
+                    </span>
+                    @for (seat of getSeatsInRow(row); track seat.id) {
+                    <button style="width: 35px; height: 35px; border-radius: 4px; border: none;"
+                        [style.background-color]="getSeatColor(seat)" [disabled]="!seat.isAvailable"
+                        (click)="toggleSeat(seat)">
+                        {{ seat?.seatNo }}
+                    </button>
+                    }
+                </div>
+                }
+                <div *ngIf="!seats.length" style="text-align: center;">
+                    <strong style="font-size: 18px;color:#1a237e;"> Oops!!!! No seats
+                        found</strong>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <div style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 20px; height: 20px; background: #e0e0e0;"></div>
+                        Available
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 20px; height: 20px; background: var(--primary);"></div>
+                        Selected
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 20px; height: 20px; background: #9e9e9e;"></div>
+                        Booked
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Summary -->
+    @if (selectedSeats.length > 0) {
+    <div class="card" style="padding: 1rem; margin-top: 2rem;">
+        <h3>Booking Summary</h3>
+        <div style="margin: 1rem 0;">
+            <p><strong>Selected Seats:</strong> {{ getSelectedSeatsText() }}</p>
+            <p><strong>Total Amount:</strong> ${{ getTotalAmount() }}</p>
+        </div>
+        <button class="btn btn-primary" (click)="proceedToPayment()">
+            Proceed to Payment
+        </button>
+    </div>
+    }
+    }
+    }
+</div>

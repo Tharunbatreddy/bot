@@ -1,0 +1,14 @@
+<owl-carousel-o [options]="carouselOptions">
+  <ng-template carouselSlide *ngFor="let movie of featuredMovies;let i=index">
+    <div class="banner-slide">
+      <img [src]="movie?.bannerUrl? movie.bannerUrl:'https://picsum.photos/1920/1080'" [alt]="movie?.movieName"
+        class="banner-image">
+      <div class="banner-content">
+        <h2 style="font-size: 2.5rem; margin: 0 0 1rem;">{{ movie?.movieName }}</h2>
+        <p style="font-size: 1.1rem; margin: 0 0 1rem;">{{ movie?.description }}</p>
+        <a [routerLink]="['/movie', movie.id]" class="btn btn-primary">Book Now</a>
+      </div>
+    </div>
+  </ng-template>
+
+</owl-carousel-o>

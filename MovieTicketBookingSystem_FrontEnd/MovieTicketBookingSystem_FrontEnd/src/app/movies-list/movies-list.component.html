@@ -1,0 +1,26 @@
+<div class="movie-grid">
+  @for (movie of movies; track movie.id) {
+  <div class="card">
+    <img [src]="movie?.imageUrl?movie.imageUrl:'https://picsum.photos/300/400'" [alt]="movie.title"
+      style="width: 100%; height: 300px; object-fit: cover;">
+    <div style="padding: 1rem;">
+      <h3 style="margin: 0 0 0.5rem;">{{ movie.movieName }}</h3>
+      <p style="margin: 0 0 0.5rem;">{{ movie?.genre }} | {{ movie.rating }}</p>
+      <div class="d-flex justify-content-btw align-item-center" style="gap: 10px;">
+        <a [routerLink]="['/movie', movie.id]" class="btn btn-primary" style="text-decoration: none;">View</a>
+        @if (router.url.includes('manage-movies')){
+        <a [routerLink]="['/edit-movie', movie.id]" class="btn btn-secondary" style="text-decoration: none;">Edit</a>
+        <a class="btn btn-danger" (click)="deleteMovie(movie.id)">Delete</a>
+        }
+      </div>
+      @if (router.url.includes('manage-movies')){
+      <div class="d-flex align-item-center" style="justify-content: center;margin: 10px;">
+        <a [routerLink]="['/manage-shows',movie.id]" class="btn btn-primary"
+          style="background-color: #5762d5;text-decoration: none;">Manage
+          Shows</a>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>

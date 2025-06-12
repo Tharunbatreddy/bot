@@ -1,0 +1,24 @@
+<div class="movie-grid">
+    @for (time of showTimes; track time.id) {
+    <div class="card">
+
+        <div style="padding: 1rem;">
+            <h3 style="margin: 0 0 0.5rem;">{{ time?.showDate | date:'MMM dd YYYY' }} | {{
+                time.showTime }}</h3>
+            <!-- <p style="margin: 0 0 0.5rem; font-weight: bold;">{{ time?.showDate | date:'MMM dd YYYY' }} | {{
+                time.showTime }}</p> -->
+            <div class="d-flex justify-content-btw align-item-center" style="gap: 10px;">
+                <a [routerLink]="['/edit-show',time.movieId.id, time.id]" class="btn btn-primary">Edit</a>
+                <a class="btn btn-danger" (click)="deleteShow(time.id)">Delete</a>
+                <a class="btn btn-secondary" (click)="location.back()">Back</a>
+
+            </div>
+        </div>
+    </div>
+    }
+
+    <div *ngIf="!showTimes.length" class="d-flex align-item-center"
+        style="font-size: 18px;color:#1a237e;text-align: center;width: 100%;">
+        <strong> Oops!!!! No Shows found</strong>
+    </div>
+</div>

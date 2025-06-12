@@ -1,0 +1,9 @@
+.social-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.social-link:hover {
+  color: var(--primary);
+}
