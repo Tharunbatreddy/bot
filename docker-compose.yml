@@ -1,13 +1,52 @@
-FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
-WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY . .
-RUN mvn clean package -DskipTests
+version: '3.8'
 
-FROM openjdk:21-jdk
+services:
 
-WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+  frontend:
+    build: ./MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd
+    image: tharun0512/ticketbooking:1.0 # Make sure you build this image using Dockerfile
+    container_name: frontend
+    ports:
+      - "8082:80"  # Map host port 3000 to container port 80 (used by Nginx)
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - ticket-net
+
+  mysql-db:
+    image: mysql:8
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Oracle?1
+      MYSQL_DATABASE: movieticketbookingsystem
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - ticket-net
+
+  backend:
+    build: ./ticketbooking/ticketbooking/ticketbooking
+    image: tharun0512/ticketbooking-backend:1.0  # Make sure you build this image using Dockerfile
+    container_name: backend
+    depends_on:
+      - mysql-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/movieticketbookingsystem
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Oracle?1
+    ports:
+      - "8080:8080" 
+    restart: unless-stopped
+    networks:
+      - ticket-net
+
+networks:
+  ticket-net:
+    driver: bridge
+
+volumes:
+  mysql_data:
