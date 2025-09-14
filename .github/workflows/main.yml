@@ -9,8 +9,8 @@ on:
 
 jobs:
   build:
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
   
-  steps:
-    - name: to checkout code
-      uses: actions/checkout@v5
+    steps:
+      - name: to checkout code
+        uses: actions/checkout@v5
