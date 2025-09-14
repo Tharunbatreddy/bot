@@ -34,6 +34,10 @@ jobs:
         run: |
           npm install --legacy-peer-deps
         working-directory: MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd
+
+      - name: Install dependencies for Chrome
+        run: sudo apt-get update && sudo apt-get install -y chromium-browser
+
         
       - name: Run tests
         run: npm test --if-present -- --watch=false --browsers=ChromeHeadless
