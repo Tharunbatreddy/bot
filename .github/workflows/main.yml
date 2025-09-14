@@ -20,16 +20,42 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 18
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+
+      
       - name: Install dependencies
         run: |
           npm install --legacy-peer-deps
         working-directory: MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd
         
       - name: Run tests
-        run: npm test --if-present
+        run: npm test --if-present -- --watch=false --browsers=ChromeHeadless
         working-directory: MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd
 
       - name: Build Angular app
         run: npm run build --if-present
         working-directory: MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd
 
+      # Publish test results to GitHub Actions UI
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd/test-results/**/*.xml
+      
+      # Upload Angular build as workflow artifact
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular-dist
+          path: MovieTicketBookingSystem_FrontEnd/MovieTicketBookingSystem_FrontEnd/dist
+      
+      
+            
+      
